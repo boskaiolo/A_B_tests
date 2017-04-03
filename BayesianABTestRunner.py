@@ -14,11 +14,14 @@ class BayesianABTestRunner(object):
             * all tests are 2-sided
         """
 
-        if name not in ["ucb1"]:
+        if name not in ["ucb1",
+                        "bandits"]:
             raise KeyError("The test is not implemented yet")
 
         if name == "ucb1":
             self.test = ucb1
+        if name == "bandits":
+            self.test = bandits
 
 
     def run_test(self, epsilon, data_samples, n_steps):
@@ -80,6 +83,26 @@ def ucb1(epsilon, data_samples, n_steps):
                   "arm performance", punctual_means)
 
 
+def bandits(epsilon, data_samples, n_steps):
+    """
+    Multi arm bandits
+
+    """
+    assert n_steps > 0
+    for group in data:
+        assert issubclass(group.dtype.type, np.integer)
+        assert set(np.unique(group)) == set((0, 1))
+
+    n_groups = len(data_samples)
+    punctual_means = np.zeros((n_groups,))
+    punctual_extractions = [list([]) for _ in range(n_groups)]
+    idxs = np.zeros((n_groups,), dtype=int)
+
+    extractions = []
+
+    for i in range(n_steps):
+        pass
+
 if __name__ == "__main__":
     from GenerateSamples import GenerateBinarySamples, BinaryGroupParams
 
@@ -91,6 +114,9 @@ if __name__ == "__main__":
             range(len(real_group_specs))]
 
     tests = BayesianABTestRunner("ucb1")
+    tests.run_test(epsilon=0.05, data_samples=data, n_steps=10001)
+
+    tests = BayesianABTestRunner("bandits")
     tests.run_test(epsilon=0.05, data_samples=data, n_steps=10001)
 
 
