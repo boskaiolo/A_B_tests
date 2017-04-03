@@ -1,11 +1,6 @@
 import numpy as np
 from scipy import stats
 
-#TODO:
-# * Statistical power
-# * Precision recall
-# * Min number of samples (16* ...)
-
 class ABTestRunner(object):
     """Some ways to do AB tests"""
 
@@ -16,9 +11,6 @@ class ABTestRunner(object):
                 name (String): the test name
                 alpha (Double): significance level
                 alternative hypothesis (String): Whether uB (>, <, <>) uA
-
-        Note:
-            * all tests are 2-sided
         """
 
         if name not in ["plain_t_test",
@@ -324,7 +316,6 @@ def binary_chi2(data, alternative):
             expected = support_group[i] * support_outcome[j] / n_samples
             chi2 += ((observed-expected) ** 2) / expected
 
-    stats.chi.cdf()
     _, p, _, _ = stats.chi2_contingency(ct, correction=False)
     return p
 
